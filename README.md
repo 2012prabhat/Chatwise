@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 💬 Chatwise — AI Chatbot Integration Platform
 
-## Getting Started
+Chatwise is a **customizable chatbot integration platform** built with **Next.js, MongoDB, and JWT Authentication**.  
+It allows users to **generate secure API keys**, embed an interactive chatbot into any website, and manage integrations easily.
 
-First, run the development server:
+---
 
+## 🚀 Features
+
+- 🔐 **Secure Authentication** using JWT + HTTP-Only Cookies  
+- 🔑 **API Key Management** (Generate, Revoke, Copy)  
+- 💬 **Customizable Chatbot Widget**  
+- 🌈 **Modern UI** with TailwindCSS  
+- ⚡ **Streamed AI Responses** for smooth chatbot experience  
+- 🧠 **Zustand-based Authentication Store** (Client-Side)  
+- 🧩 **Integration Script** with one-click Copy feature  
+
+---
+
+## 🏗️ Tech Stack
+
+| Layer | Technology |
+|-------|-------------|
+| Frontend | Next.js 14, TailwindCSS |
+| Backend | Node.js, Express (Next API Routes) |
+| Database | MongoDB + Mongoose |
+| Authentication | JWT with HTTP-only cookies |
+| State Management | Zustand |
+| Styling | TailwindCSS + Custom Components |
+
+---
+
+## 🧰 Installation
+
+### 1️⃣ Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+git clone https://github.com/2012prabhat/chatwise.git
+cd chatwise
+
+2️⃣ Install dependencies
+pnpm install
+
+3️⃣ Setup environment variables
+
+Create a .env.local file in the root directory and add:
+
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+NEXT_PUBLIC_API_BASE_URL=http://localhost:4000
+
+4️⃣ Run the development server
 pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+The app will be live at 👉 http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🔑 API Key Management
 
-## Learn More
+Each authenticated user can generate multiple API keys.
+These keys can be used to connect your custom chatbot widget to the Chatwise backend.
 
-To learn more about Next.js, take a look at the following resources:
+Generate New Key → Creates a new valid key
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Copy Key → Easily copy the key for integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Revoke Key → Disable a key instantly
 
-## Deploy on Vercel
+💻 Integration Guide
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+After generating an API key, embed the chatbot into any website by adding this script before the closing <body> tag:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<script
+  src="https://yourdomain.com/chatbot.js"
+  data-api-key="YOUR_API_KEY"
+></script>
+
+
+This script will automatically:
+
+Render a chatbot widget on your site
+
+Connect it to your Chatwise backend
+
+Authenticate using the provided API key
+
+🧠 Authentication Flow
+
+User logs in → JWT token is created
+
+Token is stored in a secure HTTP-only cookie
+
+API routes verify user via cookie using authCheck helper from lib/authCheck.js
+
+Zustand is used to manage authentication state on the client
+
+🧩 Folder Structure
+├── app/
+│   ├── api/
+│   │   ├── auth/
+│   │   │   ├── login/route.js
+│   │   │   ├── register/route.js
+│   │   ├── api-keys/route.js
+│   ├── dashboard/
+│   ├── integration/
+│
+├── components/
+│   ├── Layout.js
+│   ├── useAuthStore.js
+│
+├── lib/
+│   ├── db.js
+│   ├── authCheck.js
+│
+├── public/
+│   ├── chatbot.js
+│
+├── models/
+│   ├── User.js
+│   ├── ApiKey.js
+│
+└── README.md
+
+🌿 Environment Variables
+Variable	Description
+MONGODB_URI	MongoDB connection string
+JWT_SECRET	Secret for signing JWT tokens
+NEXT_PUBLIC_API_BASE_URL	Base API URL for client requests
+🧑‍💻 Author
+
+Prabhat Kumar
+💼 MERN Stack Developer
+🌐 Portfolio
+
+📧 2012prabhat@gmail.com
+
+🪪 License
+
+This project is licensed under the MIT License — feel free to use and modify it.
+
+⭐ Show Your Support
+
+If you found this project helpful, please consider giving it a ⭐ on GitHub.
+Your support helps keep it maintained and growing!

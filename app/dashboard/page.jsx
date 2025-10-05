@@ -2,23 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
-import { useRouter } from "next/navigation";
 
-export default function DashboardPage() {
+
+
+function DashboardPage() {
   const [user, setUser] = useState(null);
-  const router = useRouter();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-    console.log("token is", token);
-    if(!token){
-        router.push('/login')
-    }
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, [router]);
+  }, []);
 
   return (
     <Layout>
@@ -64,3 +59,6 @@ export default function DashboardPage() {
     </Layout>
   );
 }
+
+
+export default DashboardPage;
