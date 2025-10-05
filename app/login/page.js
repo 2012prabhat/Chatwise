@@ -46,7 +46,7 @@ const handleSubmit = async (e) => {
     <div
       className="min-h-screen flex items-center justify-center relative p-4"
       style={{
-        backgroundColor: "#0F172A", // background-dark
+        backgroundColor: "var(--mainCol)", // background-dark
         fontFamily: "'Poppins', sans-serif",
         color: "#E2E8F0", // on-surface-dark
       }}

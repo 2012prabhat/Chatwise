@@ -8,8 +8,8 @@
 
 
 :root{
-    --mainCol:#5d966c;
-    --mainColHover:#638b6e;
+    --mainCol:#07271a;
+    --mainColHover:#02150e;
 }
 
 .primaryBtn{
@@ -21,5 +21,21 @@
     background: var(--mainColHover);
 }
 
+.back1{
+    background: #000428;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #004e92, #000428);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #004e92, #000428); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 
+.back2{
+background: #000000;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+
+
+
+  
 
