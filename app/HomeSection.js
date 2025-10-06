@@ -7,7 +7,14 @@ function HomeSection() {
     const router = useRouter();
     return (
         <section id="home" className="min-h-[calc(100vh-65px)] p-4 flex flex-col items-center justify-center">
-            <h1 className="text-6xl font-semibold text-[#4b3ef7]">Chatwise</h1>
+           <h1
+            className="text-5xl font-bold tracking-tight bg-clip-text text-transparent"
+            style={{
+              backgroundImage: "linear-gradient(to right,#60A5FA,#ffffff)", 
+            }}
+          >
+            ChatWise
+          </h1>
             <h1 className="text-4xl text-center italic font-bold text-white mt-2">Simplifying Support With Intelligence</h1>
             <h2 className="text-gray-300 md:px-44 text-center text-2xl mt-12">Transform your customer support with AI that understands your business. Train it on your docs, customize its persona, and watch it handle inquiries 24/7.</h2>
             <div className="mt-12 flex gap-6">

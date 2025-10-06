@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaFileAlt, FaCogs, FaDatabase, FaRobot } from "react-icons/fa";
+import { FaFileAlt, FaCogs, FaDatabase, FaRobot, FaShieldAlt, FaChartLine } from "react-icons/fa";
 
 function FeaturesSection() {
 
@@ -28,21 +28,33 @@ function FeaturesSection() {
       title: "AI Smart Reply",
       desc: "Generate human-like responses instantly using advanced AI algorithms for a natural and efficient user experience.",
     },
+    {
+    id: 5,
+    icon: <FaShieldAlt className="text-4xl text-primary mb-3" />,
+    title: "Enterprise-Grade Security",
+    desc: "Protect sensitive data with robust encryption, secure APIs, and compliance-ready infrastructure built for business needs.",
+  },
+  {
+    id: 6,
+    icon: <FaChartLine className="text-4xl text-primary mb-3" />,
+    title: "Insightful Analytics",
+    desc: "Track performance, analyze user interactions, and gain actionable insights through detailed chatbot analytics dashboards.",
+  },
   ];
   return (
-    <section id="features" className='flex flex-col justify-center items-center min-h-screen pt-5'>
+    <section id="features" className='flex flex-col justify-center items-center min-h-screen pt-18'>
       <h1 className='text-4xl text-white'>Features of Chatwise</h1>
-      <h1 className='text-xl text-gray-300 p-2 text-center'>Everything you need to provide exceptional customer support with the power of AI.</h1>
+      <h1 className='text-xl text-gray-300 p-2 px-6 text-center'>Everything you need to provide exceptional customer support with the power of AI.</h1>
       <section className="py-16 bg-muted/50">
         <div className="container mx-auto px-6 flex flex-wrap justify-center gap-8">
           {data.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl hover:scale-105 transition duration-300 text-center flex flex-col items-center w-full sm:w-[45%] md:w-[30%]"
+              className= "rounded-2xl p-6 shadow-md hover:shadow-2xl hover:scale-105 transition duration-300 text-center flex flex-col items-center w-full sm:w-[45%] md:w-[30%] text-white "
             >
               {item.icon}
-              <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-              <p className="text-gray-600">{item.desc}</p>
+              <h3 className="text-xl text-white font-semibold mb-2">{item.title}</h3>
+              <p className="text-gray-400">{item.desc}</p>
             </div>
           ))}
         </div>

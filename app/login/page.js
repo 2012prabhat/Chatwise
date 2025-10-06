@@ -12,43 +12,40 @@ export default function LoginPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    const data = await res.json();
-    setLoading(false);
+      const data = await res.json();
+      setLoading(false);
 
-    if (res.ok) {
-      // Token is now in HttpOnly cookie, no need to save manually
-      // You can save user info in localStorage or Zustand
-      localStorage.setItem("user", JSON.stringify(data.user));
-      router.push("/dashboard");
-    } else {
-      alert(data.error || "Login failed");
+      if (res.ok) {
+        // Token is now in HttpOnly cookie, no need to save manually
+        // You can save user info in localStorage or Zustand
+        localStorage.setItem("user", JSON.stringify(data.user));
+        router.push("/dashboard");
+      } else {
+        alert(data.error || "Login failed");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Login error:", error);
+      alert("Something went wrong. Please try again.");
     }
-  } catch (error) {
-    setLoading(false);
-    console.error("Login error:", error);
-    alert("Something went wrong. Please try again.");
-  }
-};
-
+  };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center relative p-4"
+      className="min-h-screen flex items-center justify-center relative p-4 back1"
       style={{
-        backgroundColor: "var(--mainCol)", // background-dark
         fontFamily: "'Poppins', sans-serif",
-        color: "#E2E8F0", // on-surface-dark
       }}
     >
       {/* Grid background */}
@@ -76,31 +73,36 @@ const handleSubmit = async (e) => {
       <div className="w-full max-w-sm">
         {/* Logo + tagline */}
         <div className="text-center mb-8">
-          
-          
-          <h1
+          {/* <h1
             className="text-5xl font-bold tracking-tight bg-clip-text text-transparent"
             style={{
               backgroundImage: "linear-gradient(to right,#60A5FA,#ffffff)", // from blue-400 to white
             }}
           >
             ChatWise
-          </h1>
-          <p style={{ color: "#94A3B8" /* on-surface-dark-muted */ }} className="mt-2 text-lg">
+          </h1> */}
+          {/* <p
+            style={{ color: "#94A3B8"  }}
+            className="mt-2 text-lg"
+          >
             AI-Powered Conversations
-          </p>
+          </p> */}
         </div>
 
         {/* Login box */}
         <div
           className="backdrop-blur-sm p-8 rounded-2xl shadow-2xl"
-          style={{
-            backgroundColor: "rgba(30,41,59,0.8)", // surface-dark/80
-            boxShadow: "0 25px 50px -12px rgba(59,130,246,0.1)", // shadow-primary/10
-          }}
+          // style={{
+          //   backgroundColor: "rgba(30,41,59,0.8)", // surface-dark/80
+          //   boxShadow: "0 25px 50px -12px rgba(59,130,246,0.1)", // shadow-primary/10
+          // }}
         >
           <div className="text-center mb-6">
-            <img className="h-12 rounded-full mx-auto" src="/logoCircle.png" alt="" />
+            <img
+              className="h-12 rounded-full mx-auto"
+              src="/logoCircle.png"
+              alt=""
+            />
             <h2 className="text-3xl font-semibold text-white">Welcome Back!</h2>
             <p style={{ color: "#94A3B8" }} className="mt-1">
               Please enter your credentials.
@@ -165,10 +167,7 @@ const handleSubmit = async (e) => {
               </button>
             </div>
           </form>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-8 text-center">
+           <div className="mt-8 text-center">
           <p style={{ color: "#94A3B8" }} className="text-sm">
             Don&apos;t have an account?{" "}
             <a
@@ -180,6 +179,10 @@ const handleSubmit = async (e) => {
             </a>
           </p>
         </div>
+        </div>
+
+        {/* Footer */}
+       
       </div>
     </div>
   );
