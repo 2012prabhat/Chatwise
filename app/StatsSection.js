@@ -25,7 +25,7 @@ export default function StatsSection() {
     <>
      <section
   ref={sectionRef}
-  className="back2 text-white py-16 bg-muted/50 p-8"
+  className="text-white py-16 bg-muted/50 p-8 bg-[#1b1f1e]/40 backdrop-blur-sm"
 >
   <div className="flex flex-wrap justify-between text-center">
     {stats.map((stat, i) => (

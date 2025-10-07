@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4000 --turbopack",
+    "dev": "next dev -p 6342 --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint"
@@ -14,6 +14,7 @@
     "bcrypt": "^6.0.0",
     "cohere-ai": "^7.19.0",
     "express-rate-limit": "^8.1.0",
+    "framer-motion": "^12.23.22",
     "huggingface": "^1.4.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.1",
@@ -23,7 +24,8 @@
     "pnpm": "^10.18.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "swiper": "^12.0.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

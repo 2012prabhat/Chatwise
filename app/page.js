@@ -10,6 +10,7 @@ import FeaturesSection from "./FeaturesSection";
 import HowItWorks from "./HowItWorks";
 import Testimonials from "./Testimonials";
 import Faq from "./Faq";
+import Image from "next/image";
 
 export default function Navbar() {
   const router = useRouter();
@@ -35,11 +36,13 @@ export default function Navbar() {
           className="flex items-center space-x-2 cursor-pointer"
           onClick={() => router.push("/")}
         >
-          <img
-            src="logoCircle.png"
-            alt="ChatWise Logo"
-            className="h-8 transition-transform duration-2000 ease-in-out"
-          />
+         <Image
+  src="/logoCircle.png"
+  alt="ChatWise Logo"
+  width={32}
+  height={32}
+  className="h-8 transition-transform duration-[2000ms] ease-in-out"
+/>
           <span className="text-white font-bold text-xl">ChatWise</span>
         </div>
 
@@ -51,7 +54,7 @@ export default function Navbar() {
               className="cursor-pointer hover:text-gray-200 transition-colors duration-300 capitalize"
               onClick={() => handleScroll(item)}
             >
-              {item.replace("-", " ")}
+              {item.replaceAll("-", " ")}
             </li>
           ))}
         </ul>

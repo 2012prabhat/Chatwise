@@ -8,10 +8,7 @@ function HomeSection() {
     return (
         <section id="home" className="min-h-[calc(100vh-65px)] p-4 flex flex-col items-center justify-center">
            <h1
-            className="text-5xl font-bold tracking-tight bg-clip-text text-transparent"
-            style={{
-              backgroundImage: "linear-gradient(to right,#60A5FA,#ffffff)", 
-            }}
+            className="text-5xl gradientText"
           >
             ChatWise
           </h1>
