@@ -190,7 +190,7 @@ export default function ChatWidget() {
       <div className="fixed right-6 bottom-6 z-50">
         {open ? (
           <div className="w-80 md:w-96 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden">
-            <div className="bg-[var(--mainCol)] text-white px-4 py-3 flex items-center justify-between">
+            <div className="back1 text-white px-4 py-3 flex items-center justify-between">
               <div className="font-semibold">Support Bot</div>
               <div className="flex items-center gap-2">
                 <button

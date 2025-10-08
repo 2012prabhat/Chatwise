@@ -2,18 +2,22 @@
 
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
+import useAuthStore from "@/components/useAuthStore";
+import { useRouter } from "next/navigation";
 
 
 
 function DashboardPage() {
-  const [user, setUser] = useState(null);
+ const { user, isAuthenticated, isHydrated } = useAuthStore();
+  const router =  useRouter();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+ useEffect(() => {
+    if (!isHydrated) return; // 👈 wait until Zustand is ready
+
+    if (!isAuthenticated) {
+      router.push("/");
     }
-  }, []);
+  }, [isHydrated, isAuthenticated, router]);
 
   return (
     <Layout>

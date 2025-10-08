@@ -128,8 +128,8 @@ const fetchKeys = async () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4 sm:p-6">
-        <div className="bg-white shadow-2xl rounded-3xl p-6 sm:p-10 w-full max-w-4xl border border-gray-200">
+      <div className="min-h-screen  flex items-center justify-center p-4 sm:p-6">
+        <div className="bg-white  rounded-3xl p-6 sm:p-10 w-full ">
           <header className="text-center mb-10">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-2 leading-tight">
               Integrate <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600">Chatwise Chatbot</span>
@@ -146,65 +146,101 @@ const fetchKeys = async () => {
             </p>
           </section>
 
-          <section className="bg-gray-50 rounded-2xl p-6 border border-dashed border-gray-300 mb-10">
-            <div className="flex flex-col sm:flex-row items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Your API Keys</h2>
-              <button
-                onClick={generateKey}
-                className="mt-4 sm:mt-0 px-6 py-3 text-base font-semibold text-white bg-indigo-600 rounded-full hover:bg-indigo-700 transition-transform transform hover:scale-105 duration-200 disabled:bg-indigo-300 disabled:cursor-not-allowed shadow-lg"
-                disabled={loading}
-              >
-                {loading ? "Generating..." : "Generate New Key"}
-              </button>
-            </div>
+<section className="bg-gray-50 rounded-2xl p-6 border border-dashed border-gray-300 mb-10">
+  <div className="flex flex-col sm:flex-row items-center justify-between mb-6">
+    <h2 className="text-2xl font-bold text-gray-800">Your API Keys</h2>
+    <button
+      onClick={generateKey}
+      className="mt-4 sm:mt-0 px-6 py-3 text-base font-semibold text-white rounded-full hover:scale-105 duration-200 disabled:opacity-70 back2"
+      disabled={loading}
+    >
+      {loading ? "Generating..." : "Generate New Key"}
+    </button>
+  </div>
 
-            <ul className="divide-y divide-gray-200 -mx-6 px-6">
-              {keys.length === 0 ? (
-                <p className="text-center text-gray-500 py-6">
-                  No API keys found. Click the button above to generate your first key!
-                </p>
-              ) : (
-                keys.map((k) => {
-                  const keyValue = k.key;
-                  const uniqueId = k._id;
-                  const isActive = k.active;
-                  return (
-                    <li key={uniqueId} className="py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                      <div className="flex-1 mb-2 sm:mb-0">
-                        <div className="flex items-center mb-1">
-                          <span className={`inline-block w-2 h-2 rounded-full mr-2 ${isActive ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                          <span className={`text-sm font-medium ${isActive ? 'text-green-700' : 'text-red-700'}`}>
-                            {isActive ? 'Active' : 'Revoked'}
-                          </span>
-                        </div>
-                        <span className="font-mono text-sm sm:text-base text-gray-700 break-all">
-                          {keyValue}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => copyToClipboard(keyValue, uniqueId)}
-                          disabled={!isActive}
-                          className={`inline-flex items-center space-x-2 px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 ${isActive ? 'bg-gray-200 hover:bg-gray-300 text-gray-800' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
-                        >
-                          {copiedKeyId === uniqueId ? <><CheckIcon /><span>Copied!</span></> : <><CopyIcon /><span>Copy</span></>}
-                        </button>
-                        {isActive && (
-                          <button
-                            onClick={() => revokeKey(uniqueId)}
-                            disabled={revokingKeyId === uniqueId}
-                            className="inline-flex items-center space-x-2 px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 bg-red-100 hover:bg-red-200 text-red-700 disabled:bg-red-50 disabled:cursor-not-allowed"
-                          >
-                            {revokingKeyId === uniqueId ? <span>Revoking...</span> : <><RevokeIcon /><span>Revoke</span></>}
-                          </button>
-                        )}
-                      </div>
-                    </li>
-                  );
-                })
-              )}
-            </ul>
-          </section>
+  {/* ✅ Scrollable List */}
+  <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent pr-2">
+    <ul className="divide-y divide-gray-200 -mx-6 px-6">
+      {keys.length === 0 ? (
+        <p className="text-center text-gray-500 py-6">
+          No API keys found. Click the button above to generate your first key!
+        </p>
+      ) : (
+        keys.map((k) => {
+          const keyValue = k.key;
+          const uniqueId = k._id;
+          const isActive = k.active;
+          return (
+            <li
+              key={uniqueId}
+              className="py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center"
+            >
+              <div className="flex-1 mb-2 sm:mb-0">
+                <div className="flex items-center mb-1">
+                  <span
+                    className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                      isActive ? "bg-green-500" : "bg-red-500"
+                    }`}
+                  ></span>
+                  <span
+                    className={`text-sm font-medium ${
+                      isActive ? "text-green-700" : "text-red-700"
+                    }`}
+                  >
+                    {isActive ? "Active" : "Revoked"}
+                  </span>
+                </div>
+                <span className="font-mono text-sm sm:text-base text-gray-700 break-all">
+                  {keyValue}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => copyToClipboard(keyValue, uniqueId)}
+                  disabled={!isActive}
+                  className={`inline-flex items-center space-x-2 px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 ${
+                    isActive
+                      ? "bg-gray-200 hover:bg-gray-300 text-gray-800"
+                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  }`}
+                >
+                  {copiedKeyId === uniqueId ? (
+                    <>
+                      <CheckIcon />
+                      <span>Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <CopyIcon />
+                      <span>Copy</span>
+                    </>
+                  )}
+                </button>
+                {isActive && (
+                  <button
+                    onClick={() => revokeKey(uniqueId)}
+                    disabled={revokingKeyId === uniqueId}
+                    className="inline-flex items-center space-x-2 px-4 py-2 text-sm font-medium rounded-full transition-colors duration-200 bg-red-100 hover:bg-red-200 text-red-700 disabled:bg-red-50 disabled:cursor-not-allowed"
+                  >
+                    {revokingKeyId === uniqueId ? (
+                      <span>Revoking...</span>
+                    ) : (
+                      <>
+                        <RevokeIcon />
+                        <span>Revoke</span>
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
+            </li>
+          );
+        })
+      )}
+    </ul>
+  </div>
+</section>
+
 
           {/* New Section: How to Embed */}
           <section className="bg-white rounded-2xl p-6 border border-dashed border-gray-300">
@@ -218,7 +254,7 @@ const fetchKeys = async () => {
               </pre>
               <button
                 onClick={copyScript}
-                className={`mt-8 px-3 py-1 rounded-full text-white font-medium text-sm ${copiedScript ? 'bg-green-500' : 'bg-[#5d966c]'} hover:bg-[#4a7b56] transition-colors`}
+                className={`mt-8 px-4 py-2 rounded-md text-white font-medium text-sm transition-colors back2 cursor-pointer `}
               >
                 {copiedScript ? "Copied!" : "Copy Script"}
               </button>

@@ -1,31 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { FaQuestionCircle, FaTrashAlt, FaPlus } from "react-icons/fa";
 import Layout from "@/components/Layout";
+import api from "@/lib/api";
 
 export default function KnowledgeBasePage() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [faqs, setFaqs] = useState([]);
-  const [loading, setLoading] = useState(false); // for adding FAQ
-  const [fetching, setFetching] = useState(true); // for fetching FAQs
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   // ✅ Fetch FAQs
   const fetchFaqs = async () => {
     setFetching(true);
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("/api/knowledgebase/list", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text);
-      }
-
-      const data = await res.json();
-      setFaqs(data.faqs);
+      const res = await api.get("/knowledgebase/list");
+      setFaqs(res.data.faqs);
     } catch (err) {
       console.error("Error loading FAQs:", err);
     }
@@ -39,22 +32,9 @@ export default function KnowledgeBasePage() {
   // ✅ Delete FAQ
   const handleDeleteFAQ = async (id) => {
     if (!confirm("Are you sure you want to delete this FAQ?")) return;
-
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`/api/knowledgebase/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        // Refresh list after delete
-        fetchFaqs();
-      } else {
-        alert(data.error || "Failed to delete FAQ");
-      }
+      await api.delete(`/knowledgebase/${id}`);
+      fetchFaqs();
     } catch (err) {
       console.error("Error deleting FAQ:", err);
     }
@@ -64,110 +44,162 @@ export default function KnowledgeBasePage() {
   const handleAddFAQ = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("/api/knowledgebase/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ question, answer }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        // Refresh FAQs list to get the new FAQ with _id
-        await fetchFaqs();
-        setQuestion("");
-        setAnswer("");
-      } else {
-        alert(data.error || "Failed to add FAQ");
-      }
+      await api.post("/knowledgebase/add", { question, answer });
+      await fetchFaqs();
+      setQuestion("");
+      setAnswer("");
+      setShowModal(false);
     } catch (err) {
       console.error("Error adding FAQ:", err);
     }
-
     setLoading(false);
   };
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Knowledge Base</h1>
+      <div className="max-w-5xl mx-auto p-6 mt-4 bg-gradient-to-b from-gray-50 to-white rounded-3xl shadow-lg border border-gray-100">
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-500 bg-clip-text text-transparent drop-shadow-sm">
+            Knowledge Base
+          </h1>
+          <p className="text-gray-500 text-sm mt-1">
+            Manage and organize common chatbot questions easily.
+          </p>
+        </div>
 
-        {/* Add FAQ Form */}
-        <form
-          onSubmit={handleAddFAQ}
-          className="mb-8 space-y-4 bg-white p-6 rounded shadow"
-        >
-          <div>
-            <label className="block text-sm font-medium mb-1">Question</label>
-            <input
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              className="w-full border p-2 rounded"
-              placeholder="Enter a question"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Answer</label>
-            <textarea
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              className="w-full border p-2 rounded"
-              placeholder="Enter the answer"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-[var(--mainCol)] text-white px-4 py-2 rounded hover:bg-[var(--mainColHover)] disabled:opacity-50"
-          >
-            {loading ? "Adding..." : "Add FAQ"}
-          </button>
-        </form>
-
-        {/* FAQ List */}
-        <h2 className="text-2xl font-semibold mb-4">Your FAQs</h2>
-
-        {fetching ? (
-          <p className="text-gray-600">Loading FAQs...</p>
-        ) : (
-          <div className="space-y-3">
-            {faqs.length > 0 ? (
-              faqs.map((faq, index) => (
-                <div
-                  key={faq._id || index} // ✅ unique key
-                  className="p-4 border rounded bg-white shadow-sm flex justify-between items-start"
+        {/* FAQ Section */}
+        <div className="space-y-3 h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent px-1">
+          {fetching ? (
+            <p className="text-gray-500 text-center text-sm py-10">
+              Loading FAQs...
+            </p>
+          ) : faqs.length > 0 ? (
+            faqs.map((faq) => (
+              <div
+                key={faq._id}
+                className="flex justify-between items-start p-4 rounded-xl bg-white/80 backdrop-blur-md border border-gray-200 hover:shadow-md transition-all"
+              >
+                <div>
+                  <p className="font-medium text-gray-800 text-sm">
+                    {faq.question}
+                  </p>
+                  <p className="text-gray-600 mt-1 text-xs leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleDeleteFAQ(faq._id)}
+                  className="text-red-500 hover:text-red-600 opacity-70 hover:opacity-100 transition text-sm mt-1"
+                  title="Delete FAQ"
                 >
-                  <div>
-                    <p className="font-medium">{faq.question}</p>
-                    <p className="text-gray-700 mt-1">{faq.answer}</p>
-                  </div>
+                  <FaTrashAlt />
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500 text-center text-sm py-10">
+              No FAQs yet. Add your first one!
+            </p>
+          )}
+        </div>
 
-                  {/* Delete Button */}
+        {/* Add Button */}
+        <div className="flex justify-end mt-5">
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium shadow hover:scale-[1.02] transition-transform back2 cursor-pointer"
+          >
+            <FaPlus />
+            Add FAQ
+          </button>
+        </div>
+
+        {/* Modal */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 animate-fadeIn">
+            <div className="bg-white/95 backdrop-blur-lg p-6 rounded-2xl shadow-xl w-[90%] max-w-md border border-gray-200 animate-scaleIn">
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                Add New FAQ
+              </h3>
+              <form onSubmit={handleAddFAQ} className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    Question
+                  </label>
+                  <input
+                    type="text"
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    className="w-full bg-gray-50 text-gray-900 border border-gray-200 text-sm p-2 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    placeholder="Enter question"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    Answer
+                  </label>
+                  <textarea
+                    value={answer}
+                    onChange={(e) => setAnswer(e.target.value)}
+                    className="w-full bg-gray-50 text-gray-900 border border-gray-200 text-sm p-2 rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    placeholder="Enter answer"
+                    rows={3}
+                    required
+                  />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-2">
                   <button
-                    onClick={() => handleDeleteFAQ(faq._id)}
-                    className="text-red-600 hover:text-red-800 font-semibold"
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-1.5 rounded-md border text-gray-500 hover:bg-gray-100 text-sm"
                   >
-                    Delete
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="px-4 py-1.5 rounded-md bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-sm hover:opacity-90 transition disabled:opacity-50 back2 cursor-pointer"
+                  >
+                    {loading ? "Adding..." : "Add FAQ"}
                   </button>
                 </div>
-              ))
-            ) : (
-              <p className="text-gray-600">No FAQs yet. Add your first one!</p>
-            )}
+              </form>
+            </div>
           </div>
         )}
       </div>
+
+      {/* Animations */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.25s ease-out;
+        }
+        .animate-scaleIn {
+          animation: scaleIn 0.25s ease-out;
+        }
+      `}</style>
     </Layout>
   );
 }

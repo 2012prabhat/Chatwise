@@ -21,79 +21,174 @@ export default function SignupPage() {
     e.preventDefault();
     setLoading(true);
 
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    const data = await res.json();
-    setLoading(false);
+      const data = await res.json();
+      setLoading(false);
 
-    if (res.ok) {
-      alert("Signup successful!");
-      router.push("/login");
-    } else {
-      alert(data.error || "Signup failed");
+      if (res.ok) {
+        alert("Signup successful!");
+        router.push("/login");
+      } else {
+        alert(data.error || "Signup failed");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Signup error:", error);
+      alert("Something went wrong. Please try again.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded shadow-md w-full max-w-md"
+    <div
+      className="min-h-screen flex items-center justify-center relative p-4 back1"
+      style={{
+        fontFamily: "'Poppins', sans-serif",
+      }}
+    >
+      {/* Grid background */}
+      <div
+        className="absolute inset-0 -z-10 h-full w-full"
+        style={{
+          backgroundColor: "#0F172A",
+          backgroundImage:
+            "linear-gradient(to right,#8080800a 1px,transparent 1px),linear-gradient(to bottom,#8080800a 1px,transparent 1px)",
+          backgroundSize: "14px 24px",
+        }}
       >
-        <h1 className="text-2xl font-bold mb-6">Create an Account</h1>
-
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={form.name}
-          onChange={handleChange}
-          className="w-full mb-4 p-2 border rounded"
-          required
+        <div
+          className="absolute left-0 right-0 top-0 -z-10 m-auto rounded-full"
+          style={{
+            height: "310px",
+            width: "310px",
+            backgroundColor: "#60A5FA",
+            opacity: 0.2,
+            filter: "blur(100px)",
+          }}
         />
+      </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          className="w-full mb-4 p-2 border rounded"
-          required
-        />
+      <div className="w-full max-w-sm">
+        {/* Logo + tagline */}
+        <div className="text-center mb-8">
+          <img
+            className="h-12 rounded-full mx-auto"
+            src="/logoCircle.png"
+            alt="ChatWise Logo"
+          />
+          <h2 className="text-3xl font-semibold text-white mt-4">
+            Create an Account
+          </h2>
+          <p style={{ color: "#94A3B8" }} className="mt-1">
+            Join ChatWise and start your journey.
+          </p>
+        </div>
 
-        <input
-          type="text"
-          name="company"
-          placeholder="Company Name"
-          value={form.company}
-          onChange={handleChange}
-          className="w-full mb-4 p-2 border rounded"
-          required
-        />
+        {/* Signup box */}
+        <div className="backdrop-blur-sm p-8 rounded-2xl shadow-2xl">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={form.name}
+                onChange={handleChange}
+                className="w-full rounded-lg border-2 text-white h-12 px-4 transition duration-300 ease-in-out"
+                style={{
+                  borderColor: "#334155",
+                  backgroundColor: "rgba(30,41,59,0.5)",
+                  color: "#E2E8F0",
+                }}
+                required
+              />
+            </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          className="w-full mb-6 p-2 border rounded"
-          required
-        />
+            <div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={handleChange}
+                className="w-full rounded-lg border-2 text-white h-12 px-4 transition duration-300 ease-in-out"
+                style={{
+                  borderColor: "#334155",
+                  backgroundColor: "rgba(30,41,59,0.5)",
+                  color: "#E2E8F0",
+                }}
+                required
+              />
+            </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? "Signing up..." : "Sign Up"}
-        </button>
-      </form>
+            <div>
+              <input
+                type="text"
+                name="company"
+                placeholder="Company Name"
+                value={form.company}
+                onChange={handleChange}
+                className="w-full rounded-lg border-2 text-white h-12 px-4 transition duration-300 ease-in-out"
+                style={{
+                  borderColor: "#334155",
+                  backgroundColor: "rgba(30,41,59,0.5)",
+                  color: "#E2E8F0",
+                }}
+                required
+              />
+            </div>
+
+            <div>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={handleChange}
+                className="w-full rounded-lg border-2 text-white h-12 px-4 transition duration-300 ease-in-out"
+                style={{
+                  borderColor: "#334155",
+                  backgroundColor: "rgba(30,41,59,0.5)",
+                  color: "#E2E8F0",
+                }}
+                required
+              />
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full h-12 px-5 font-bold rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50"
+                style={{
+                  backgroundImage: "linear-gradient(to right,#3B82F6,#60A5FA)",
+                  color: "#ffffff",
+                }}
+              >
+                {loading ? "Signing up..." : "Sign Up"}
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-8 text-center">
+            <p style={{ color: "#94A3B8" }} className="text-sm">
+              Already have an account?{" "}
+              <a
+                href="/login"
+                className="font-semibold transition-colors"
+                style={{ color: "#60A5FA" }}
+              >
+                Log In
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

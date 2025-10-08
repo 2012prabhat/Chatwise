@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import useAuthStore from "@/components/useAuthStore";
 
 export default function LoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const login = useAuthStore((state) => state.login);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,9 +29,7 @@ export default function LoginPage() {
       setLoading(false);
 
       if (res.ok) {
-        // Token is now in HttpOnly cookie, no need to save manually
-        // You can save user info in localStorage or Zustand
-        localStorage.setItem("user", JSON.stringify(data.user));
+        login(data.user);
         router.push("/dashboard");
       } else {
         alert(data.error || "Login failed");
