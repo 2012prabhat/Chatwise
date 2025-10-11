@@ -1,9 +1,9 @@
 (function () {
-  const baseUrl = "http://localhost:4000"
+  const baseUrl = "http://localhost:6342"
   const apiKey = document.currentScript.getAttribute("data-api-key");
-  const brandColor = "#5d966c";
-  const brandLight = "#e8f5ec";
-  const brandDark = "#4a7858";
+  const brandColor =document.currentScript.getAttribute("color") || "#07271a";
+  const brandLogo =document.currentScript.getAttribute("logo") || "https://chatwise-chatbot.vercel.app/_next/image?url=%2FlogoCircle.png&w=64&q=75";
+  const brandDark = "";
 
   // Create chatbot container
   const container = document.createElement("div");
@@ -41,6 +41,7 @@
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="width:8px;height:8px;background:#4ade80;border-radius:50%;"></div>
           <span>Support Assistant</span>
+         
         </div>
         <div>
           <button id="chat-clear" title="Clear chat" style="
@@ -87,7 +88,8 @@
 ">Hello! 👋 I’m your virtual assistant. How can I help you today?</div>
       </div>
 
-      <div style="padding:12px 16px;background:white;border-top:1px solid #f0f0f0;">
+      <div style="padding:12px 16px;background:white;border-top:1px solid #f0f0f0;text-align:center">
+      <img style="max-height:50px" src=${brandLogo} />
         <div style="display:flex;background:white;border-radius:24px;border:1px solid #eaeaea;overflow:hidden;">
           <textarea id="chat-input" placeholder="Type your message..." style="
               flex:1;

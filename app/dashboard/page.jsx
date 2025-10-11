@@ -40,13 +40,13 @@ function DashboardPage() {
 
         {/* Future: Add analytics here */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          <div className="bg-white p-6 rounded shadow">
-            <h2 className="font-semibold text-lg">FAQs</h2>
+          <div className="bg-white p-6 rounded shadow cursor-pointer" onClick={()=>router.push("/knowledgebase")}>
+            <h2 className="font-semibold text-lg " >Knowledge Base</h2>
             <p className="text-gray-600">
               Manage your knowledge base in the FAQ section.
             </p>
           </div>
-          <div className="bg-white p-6 rounded shadow">
+          <div className="bg-white p-6 rounded shadow cursor-pointer" onClick={()=>router.push('/integration')}>
             <h2 className="font-semibold text-lg">Chatbot</h2>
             <p className="text-gray-600">
               Get your embed code and integrate it with your site.

@@ -148,13 +148,13 @@ export default function LoginPage() {
             </div>
 
             <div className="text-right">
-              <a
-                href="#"
-                className="text-sm font-medium transition-colors"
+              <div
+                onClick={()=>router.push("/forgot-password")}
+                className="text-sm font-medium transition-colors cursor-pointer"
                 style={{ color: "#60A5FA" }} // primary-light
               >
                 Forgot Password?
-              </a>
+              </div>
             </div>
 
             <div>

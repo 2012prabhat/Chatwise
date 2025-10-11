@@ -30,7 +30,7 @@ export async function POST(req) {
     await user.save();
 
     // Create password reset link
-    const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${resetToken}`;
 
     // Email Template
     const subject = "Password Reset Request";
