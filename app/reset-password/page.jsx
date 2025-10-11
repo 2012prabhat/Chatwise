@@ -1,23 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
 import { alertError, alertSuccess } from "@/components/Alert";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Extract token from URL query
   useEffect(() => {
-    const tokenParam = searchParams.get("token");
+    const params = new URLSearchParams(window.location.search);
+    const tokenParam = params.get("token");
     if (tokenParam) setToken(tokenParam);
-  }, [searchParams]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ export default function ResetPasswordPage() {
     try {
       const { data } = await axios.patch(
         "/api/auth/reset-password",
-        { token, newPassword:password, confirmPassword },
+        { token, newPassword: password, confirmPassword },
         { headers: { "Content-Type": "application/json" } }
       );
 
