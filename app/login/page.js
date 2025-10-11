@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/components/useAuthStore";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -98,10 +99,13 @@ export default function LoginPage() {
           // }}
         >
           <div className="text-center mb-6">
-            <img
-              className="h-12 rounded-full mx-auto"
+            <Image
               src="/logoCircle.png"
-              alt=""
+              alt="ChatWise Logo"
+              width={42}
+              height={32}
+              className="h-12 rounded-full mx-auto"
+              onClick={()=>router.push("/")}
             />
             <h2 className="text-3xl font-semibold text-white">Welcome Back!</h2>
             <p style={{ color: "#94A3B8" }} className="mt-1">
@@ -167,22 +171,21 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
-           <div className="mt-8 text-center">
-          <p style={{ color: "#94A3B8" }} className="text-sm">
-            Don&apos;t have an account?{" "}
-            <a
-              href="#"
-              className="font-semibold transition-colors"
-              style={{ color: "#60A5FA" }}
-            >
-              Sign Up
-            </a>
-          </p>
-        </div>
+          <div className="mt-8 text-center">
+            <p style={{ color: "#94A3B8" }} className="text-sm">
+              Don&apos;t have an account?{" "}
+              <button
+               onClick={()=>router.push('/get-started')}
+                className="font-semibold transition-colors cursor-pointer"
+                style={{ color: "#60A5FA" }}
+              >
+                Sign Up
+              </button>
+            </p>
+          </div>
         </div>
 
         {/* Footer */}
-       
       </div>
     </div>
   );

@@ -16,16 +16,17 @@ function HomeSection() {
             <h2 className="text-gray-300 md:px-44 text-center text-2xl mt-12">Transform your customer support with AI that understands your business. Train it on your docs, customize its persona, and watch it handle inquiries 24/7.</h2>
             <div className="mt-12 flex gap-6">
                 <button
-                    className="bg-white flex items-center gap-2 text-black px-4 py-1 rounded rounded-lg hover:bg-gray-200 transition duration-300 group font-semibold cursor-pointer"
+                    className="bg-white flex items-center gap-2 text-black px-4 rounded-lg hover:bg-gray-200 transition duration-300 group font-semibold cursor-pointer py-3"
                     onClick={() => router.push("/get-started")}
                 >
                     Get Started
                     <FaChevronRight className="transition-transform duration-300 group-hover:translate-x-1 " />
                 </button>
-                <button className="flex items-center gap-2 px-6 py-3 rounded cursor-pointer text-white backdrop-blur-md bg-white/20 border border-white/30 hover:bg-white/30 transition duration-300 rounded rounded-lg">
+
+                {/* <button className="flex items-center gap-2 px-6 py-3 rounded cursor-pointer text-white backdrop-blur-md bg-white/20 border border-white/30 hover:bg-white/30 transition duration-300 rounded rounded-lg">
                     <FaPlay className="text-white" />
                     Watch Demo
-                </button>
+                </button> */}
             </div>
 
 

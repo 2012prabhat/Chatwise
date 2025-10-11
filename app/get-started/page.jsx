@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { alertSuccess, alertError } from "@/components/Alert";
+import axios from "axios";
+import Image from "next/image";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -9,6 +12,7 @@ export default function SignupPage() {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     company: "",
   });
   const [loading, setLoading] = useState(false);
@@ -17,36 +21,36 @@ export default function SignupPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+  if (form.password !== form.confirmPassword) {
+    alertError("Passwords do not match!");
+    return;
+  }
 
-      const data = await res.json();
-      setLoading(false);
+  setLoading(true);
 
-      if (res.ok) {
-        alert("Signup successful!");
-        router.push("/login");
-      } else {
-        alert(data.error || "Signup failed");
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("Signup error:", error);
-      alert("Something went wrong. Please try again.");
+  try {
+    const { data } = await axios.post("/api/auth/signup", form);
+
+    setLoading(false);
+    alertSuccess("Verification email sent to your email ID");
+  } catch (error) {
+    setLoading(false);
+
+    if (error.response && error.response.data?.message) {
+      alertError(error.response.data.message);
+    } else {
+      alertError("Something went wrong. Please try again.");
     }
-  };
+  }
+};
+
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center relative p-4 back1"
+      className="flex items-center justify-center relative p-4 back1"
       style={{
         fontFamily: "'Poppins', sans-serif",
       }}
@@ -76,11 +80,14 @@ export default function SignupPage() {
       <div className="w-full max-w-sm">
         {/* Logo + tagline */}
         <div className="text-center mb-8">
-          <img
-            className="h-12 rounded-full mx-auto"
-            src="/logoCircle.png"
-            alt="ChatWise Logo"
-          />
+          <Image
+                       src="/logoCircle.png"
+                       alt="ChatWise Logo"
+                       width={42}
+                       height={32}
+                       className="h-12 rounded-full mx-auto"
+                       onClick={()=>router.push("/")}
+                     />
           <h2 className="text-3xl font-semibold text-white mt-4">
             Create an Account
           </h2>
@@ -143,14 +150,30 @@ export default function SignupPage() {
               />
             </div>
 
-            <div>
+            {/* Password + Confirm Password in same row */}
+            <div className="flex gap-4">
               <input
                 type="password"
                 name="password"
                 placeholder="Password"
                 value={form.password}
                 onChange={handleChange}
-                className="w-full rounded-lg border-2 text-white h-12 px-4 transition duration-300 ease-in-out"
+                className="w-1/2 rounded-lg border-2 text-white h-12 px-4 transition duration-300 ease-in-out"
+                style={{
+                  borderColor: "#334155",
+                  backgroundColor: "rgba(30,41,59,0.5)",
+                  color: "#E2E8F0",
+                }}
+                required
+              />
+
+              <input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                className="w-1/2 rounded-lg border-2 text-white h-12 px-4 transition duration-300 ease-in-out"
                 style={{
                   borderColor: "#334155",
                   backgroundColor: "rgba(30,41,59,0.5)",
@@ -178,13 +201,13 @@ export default function SignupPage() {
           <div className="mt-8 text-center">
             <p style={{ color: "#94A3B8" }} className="text-sm">
               Already have an account?{" "}
-              <a
-                href="/login"
-                className="font-semibold transition-colors"
+              <button
+                onClick={() => router.push("/login")}
+                className="font-semibold transition-colors cursor-pointer"
                 style={{ color: "#60A5FA" }}
               >
-                Log In
-              </a>
+                Login
+              </button>
             </p>
           </div>
         </div>

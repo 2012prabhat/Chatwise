@@ -11,7 +11,7 @@ const useAuthStore = create(
       isHydrated: false, // 👈 added flag
 
       login: (userData) => set({ user: userData, isAuthenticated: true }),
-      logout: () => set({ user: null, isAuthenticated: false }),
+      logout: () => {set({ user: null, isAuthenticated: false })},
 
       setHydrated: () => set({ isHydrated: true }),
     }),
