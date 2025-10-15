@@ -1,5 +1,5 @@
 (function () {
-  const baseUrl = "http://localhost:6342"
+  const baseUrl = "https://chatwise-chatbot.vercel.app"
   const apiKey = document.currentScript.getAttribute("data-api-key");
   const brandColor =document.currentScript.getAttribute("color") || "#07271a";
   const brandLogo =document.currentScript.getAttribute("logo") || "https://chatwise-chatbot.vercel.app/_next/image?url=%2FlogoCircle.png&w=64&q=75";
