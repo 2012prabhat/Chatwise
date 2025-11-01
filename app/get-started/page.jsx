@@ -50,7 +50,7 @@ const handleSubmit = async (e) => {
 
   return (
     <div
-      className="flex items-center justify-center relative p-4 back1"
+      className="flex items-center justify-center relative p-4 back1 min-h-screen"
       style={{
         fontFamily: "'Poppins', sans-serif",
       }}
