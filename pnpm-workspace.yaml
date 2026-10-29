@@ -1,0 +1,14 @@
+packages:
+  - "."
+
+allowBuilds:
+  '@tailwindcss/oxide': true
+  bcrypt: true
+  sharp: true
+  unrs-resolver: true
+
+onlyBuiltDependencies:
+  - "@tailwindcss/oxide"
+  - bcrypt
+  - sharp
+  - unrs-resolver
