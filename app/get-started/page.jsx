@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
+import useAuthStore from "@/components/useAuthStore";
 import {
   FaUser,
   FaEnvelope,
@@ -24,6 +25,7 @@ import { alertSuccess, alertError } from "@/components/Alert";
 
 export default function SignupPage() {
   const router = useRouter();
+  const { isAuthenticated, isHydrated } = useAuthStore();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -35,6 +37,13 @@ export default function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [agreed, setAgreed] = useState(true);
+
+  // Automatically redirect authenticated user to dashboard
+  useEffect(() => {
+    if (isHydrated && isAuthenticated) {
+      router.replace("/dashboard");
+    }
+  }, [isAuthenticated, isHydrated, router]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -79,6 +88,18 @@ export default function SignupPage() {
       alertError(errorMsg);
     }
   };
+
+  // If user is already logged in, hide signup page and redirect
+  if (isHydrated && isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#070b14] text-white flex items-center justify-center select-none">
+        <div className="flex flex-col items-center gap-3">
+          <FaSyncAlt className="text-sky-400 text-2xl animate-spin" />
+          <p className="text-xs text-slate-400 font-medium">Already signed in. Redirecting to dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#070b14] text-white flex flex-col justify-between relative overflow-hidden select-none">

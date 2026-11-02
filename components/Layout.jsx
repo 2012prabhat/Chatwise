@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,6 +13,7 @@ import {
   FaBolt,
   FaCheck,
   FaRobot,
+  FaSyncAlt,
 } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { HiX } from "react-icons/hi";
@@ -45,8 +46,15 @@ const navigationItems = [
 export default function Layout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, logout } = useAuthStore();
+  const { user, isAuthenticated, isHydrated, logout } = useAuthStore();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Client-side authentication guard for all dashboard pages
+  useEffect(() => {
+    if (isHydrated && !isAuthenticated) {
+      router.replace("/login");
+    }
+  }, [isHydrated, isAuthenticated, router]);
 
   const handleLogout = async () => {
     try {
@@ -59,6 +67,18 @@ export default function Layout({ children }) {
       router.push("/login");
     }
   };
+
+  // If user is not authenticated or store is still hydrating, hide all dashboard pages
+  if (!isHydrated || !isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#070b14] text-white flex items-center justify-center select-none">
+        <div className="flex flex-col items-center gap-3">
+          <FaSyncAlt className="text-sky-400 text-2xl animate-spin" />
+          <p className="text-xs text-slate-400 font-medium">Verifying authorization...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col lg:flex-row font-sans selection:bg-sky-500 selection:text-white">

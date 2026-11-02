@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/components/useAuthStore";
 import Image from "next/image";
@@ -22,6 +22,7 @@ import { alertSuccess, alertError } from "@/components/Alert";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { isAuthenticated, isHydrated, login } = useAuthStore();
   const [form, setForm] = useState({
     email: "2012prabhat@gmail.com",
     password: "prabhat@123",
@@ -30,7 +31,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
 
-  const login = useAuthStore((state) => state.login);
+  // Automatically redirect authenticated user to dashboard
+  useEffect(() => {
+    if (isHydrated && isAuthenticated) {
+      router.replace("/dashboard");
+    }
+  }, [isAuthenticated, isHydrated, router]);
 
   const fillDemoCredentials = () => {
     setForm({
@@ -76,6 +82,18 @@ export default function LoginPage() {
       alertError("Something went wrong. Please check your connection.");
     }
   };
+
+  // If user is already logged in, hide login page and show redirecting state
+  if (isHydrated && isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#070b14] text-white flex items-center justify-center select-none">
+        <div className="flex flex-col items-center gap-3">
+          <FaSyncAlt className="text-sky-400 text-2xl animate-spin" />
+          <p className="text-xs text-slate-400 font-medium">Already signed in. Redirecting to dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#070b14] text-white flex flex-col justify-between relative overflow-hidden select-none">
